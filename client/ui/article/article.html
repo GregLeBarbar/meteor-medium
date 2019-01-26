@@ -1,0 +1,27 @@
+<template name="article_page">
+    <h3>Page de l'article</h3>
+</template>
+
+<template name="article_create_form">
+    <div class="card my-2">
+        <h5 class="card-header">Publier un article</h5>
+        <div class="card-body">
+            <form class="js-create-article">
+                <input type="text" class="form-control mb-2" placeholder="Titre" name="title">
+                <textarea name="content" rows="20" class="form-control mb-2" placeholder="Contenu de l'article"></textarea>
+                <div class="my-1 text-right">
+                    <button type="button" class="btn btn-outline-secondary">Annuler</button>
+                    <button type="submit" class="btn btn-success">Publier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="article_edit_form">
+    <h3>Formulaire d'édition d'un article</h3>
+</template>
+
+<template name="article_list">
+    <h3>Liste des articles</h3>
+</template>

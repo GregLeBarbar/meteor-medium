@@ -1,11 +1,6 @@
-<body>
-
-    {{> layout }}
-</body>
-
 <template name="layout">
     {{> navbar }}
     <div class="container">
-        {{> home }}
+        {{> Template.dynamic template=main }}
     </div>
 </template>
