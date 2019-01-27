@@ -9,15 +9,23 @@ Template.navbar.events({
         Meteor.logout();
     },
     'click .js-goto-create-article'(event, instance) {
-        FlowRouter.go('/article/create');
+        if (Meteor.userId()) {
+            FlowRouter.go('/article/create');            
+        } else {
+            Session.set('redirection', '/article/create');
+            Modal.show('login_modal');
+        }
     }
 });
 
 Template.login_modal.onCreated(function(){
     this.autorun(() => {
         if (Meteor.userId()) {
-            console.log("Cacher la modal");
             Modal.hide('login_modal');
+            if (Session.get('redirection')) {
+                FlowRouter.go(Session.get('redirection'));
+                Session.set('redirection', undefined);
+            }
         } 
     });
 });

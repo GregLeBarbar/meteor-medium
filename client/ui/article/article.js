@@ -10,19 +10,18 @@ Template.article_create_form.events({
         const title = event.target.title.value;
         const content = event.target.content.value;
 
-        let articleDocument = {
-            title: title,
-            content: content,
-            createdAt: new Date(),
-            ownerId: Meteor.userId()
-        };
-
-        console.log(articleDocument);
-
-        Articles.insert(articleDocument);
-
-        event.target.title.value = '';
-        event.target.content.value = '';
+        // call meteor methods
+        Meteor.call(
+            'insertArticle', 
+            {title: title, content: content}, 
+            function(error, articleId){
+                if (!error) {
+                    event.target.title.value = '';
+                    event.target.content.value = '';
+                    FlowRouter.go('/article/:articleId', {articleId: articleId})
+                }                
+            }
+        );
     }
 });
 
@@ -53,12 +52,26 @@ Template.article_edit_form.events({
         const content = event.target.content.value;
         const articleId = FlowRouter.getParam('articleId');
 
-        Articles.update({_id:articleId}, { $set: {title: title, content: content}});
-
-        FlowRouter.go('/article/:articleId', {articleId: articleId});
+        // call meteor methods
+        Meteor.call(
+            'updateArticle', 
+            {articleId: articleId, title: title, content: content},
+            function(error, result) {
+                if (!error) {
+                    FlowRouter.go('/article/:articleId', {articleId: articleId});    
+                }
+            }
+        );
     },
     'click .js-delete-article'(event, instance) {
-        Articles.remove({_id: FlowRouter.getParam('articleId')});
-        FlowRouter.go('/');
+        
+        const articleId = FlowRouter.getParam('articleId');
+
+        // call meteor methods
+        Meteor.call('removeArticle', articleId, function(error, result) {
+            if (!error) {
+                FlowRouter.go('/');
+            }
+        });
     }
 });

@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import '../both';
 
-Meteor.startup(() => {
-  // code to run on server at startup
-});
+// Permet d'interdire l'update des users directement côté client
+Meteor.users.deny({
+  update() {
+    return true;
+  }
+})

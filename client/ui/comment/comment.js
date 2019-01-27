@@ -5,18 +5,24 @@ Template.comment_form.events({
     'submit .js-create-comment'(event, instance){
         event.preventDefault();
 
-        const content = event.target.content.value;
-
-        let commentDocument = {
-            content: content,
-            articleId: FlowRouter.getParam('articleId'),
-            createdAt: new Date(),
-            ownerId: Meteor.userId()
+        if (!Meteor.userId()) {
+            Modal.show('login_modal');
+            return;
         }
 
-        Comments.insert(commentDocument);
+        const content = event.target.content.value;
+        const articleId = FlowRouter.getParam('articleId');
 
-        event.target.content.value = '';
+        // call meteor methods
+        Meteor.call(
+            'insertComment', 
+            {articleId: articleId, content: content}, 
+            function(error, result){
+                if (!error) {
+                    event.target.content.value = '';
+                }                
+            }
+        );
     }
 });
 
@@ -24,4 +30,4 @@ Template.comment_list.helpers({
     comments() {
         return Comments.find({articleId: FlowRouter.getParam('articleId')}, {sort:{createdAt: 1}});
     }
-})
+});
