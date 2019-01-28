@@ -1,5 +1,6 @@
 import './comment.html'
 import { Comments } from '../../../both';
+import { FlowRouter } from 'meteor/ostrio:flow-router-extra';
 
 Template.comment_form.events({
     'submit .js-create-comment'(event, instance){
