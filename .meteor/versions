@@ -3,7 +3,6 @@ accounts-password@1.5.1
 alexwine:bootstrap-4@4.1.0
 allow-deny@1.1.0
 audit-argument-checks@1.0.7
-autopublish@1.0.7
 autoupdate@1.5.0
 babel-compiler@7.2.4
 babel-runtime@1.3.0
@@ -90,6 +89,7 @@ templating@1.3.2
 templating-compiler@1.3.3
 templating-runtime@1.3.2
 templating-tools@1.1.2
+tmeasday:publish-counts@0.8.0
 tracker@1.2.0
 ui@1.0.13
 underscore@1.0.10

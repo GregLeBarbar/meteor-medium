@@ -25,17 +25,49 @@ Template.article_create_form.events({
     }
 });
 
+const NUM_ARTICLE_IN_PAGE = 5;
+
+Template.article_list.onCreated(function() {
+    this.autorun(()=> {
+        let currentPage = +FlowRouter.getParam('page') || 1;
+        let skip = (currentPage - 1) * NUM_ARTICLE_IN_PAGE;
+        this.subscribe('articles.list', skip, NUM_ARTICLE_IN_PAGE);
+    });
+});
+
 Template.article_list.helpers({
     articles() {
         return Articles.find({}, {sort:{createdAt: -1}}).fetch();
-    }
+    },
+    pages() {
+        let articlesCount = Counts.get('articlesCount');
+        let pagesCount = Math.ceil(articlesCount / NUM_ARTICLE_IN_PAGE);
 
+        // + pour convertir en number
+        let currentPage = +FlowRouter.getParam('page') || 1;
+
+        let pages = [];
+        for (let i = 1; i < pagesCount + 1; i++) {
+            pages.push({index: i, active: false});
+        }
+        return pages;
+    }
+});
+
+Template.article_page.onCreated(function() {
+    let articleId = FlowRouter.getParam('articleId');
+    this.subscribe('article.single', articleId);
 });
 
 Template.article_page.helpers({
     article() {
         return Articles.findOne({_id: FlowRouter.getParam('articleId')});
     }
+});
+
+Template.article_edit_form.onCreated(function() {
+    let articleId = FlowRouter.getParam('articleId');
+    this.subscribe('article.edit', articleId);
 });
 
 Template.article_edit_form.helpers({
